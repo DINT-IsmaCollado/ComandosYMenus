@@ -5,8 +5,114 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ComandosYMenus"
         mc:Ignorable="d"
-        Title="Comandos y menús" Height="450" Width="800">
-    <Grid>
+        Title="Comandos y menús" Height="450" Width="800"
+        Icon="Iconos/menu.ico">
+
+    <Window.CommandBindings>
+        <CommandBinding 
+            Command="ApplicationCommands.New"
+            Executed="NewCommand_Executed"
+            CanExecute="NewCommand_CanExecute"/>
+
+        <CommandBinding 
+            Command="local:CustomCommands.Exit"
+            Executed="ExitCommand_Executed"/>
+
+        <CommandBinding 
+            Command="local:CustomCommands.Delete"
+            Executed="DeleteCommand_Executed"
+            CanExecute="DeleteCommand_CanExecute"/>
+    </Window.CommandBindings>
+    
+    <DockPanel>
+
+        <Menu DockPanel.Dock="Top">
+
+            <MenuItem Header="_Archivo">
+                <MenuItem Header="_Nuevo" InputGestureText="Ctrl+N" Command="ApplicationCommands.New">
+                    <MenuItem.Icon>
+                        <Image Source="Iconos/add.ico"></Image>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <Separator/>
+                <MenuItem Header="_Salir" InputGestureText="Ctrl+S" Command="local:CustomCommands.Exit">
+                    <MenuItem.Icon>
+                        <Image Source="Iconos/exit.ico"></Image>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>
+
+            <MenuItem Header="_Editar">
+
+                <MenuItem Header="_Copiar" InputGestureText="Ctrl+C">
+                    <MenuItem.Icon>
+                        <Image Source="Iconos/copy.ico"></Image>
+                    </MenuItem.Icon>
+                </MenuItem>
+
+                <MenuItem Header="_Pegar" InputGestureText="Ctrl+V">
+                    <MenuItem.Icon>
+                        <Image Source="Iconos/paste.ico"></Image>
+                    </MenuItem.Icon>
+                </MenuItem>
+
+                <Separator/>
+
+                <MenuItem Header="_Vaciar" InputGestureText="Alt+V">
+                    <MenuItem.Icon>
+                        <Image Source="Iconos/delete.ico"></Image>
+                    </MenuItem.Icon>
+                </MenuItem>
+
+            </MenuItem>
+
+            <MenuItem Header="_Ver">
+                
+                <MenuItem Header="Barra de herramientas General" IsCheckable="True" IsChecked="True"/>
+                <MenuItem Header="Barra de herramientas Edicion" IsCheckable="True" IsChecked="True"/>
+                
+            </MenuItem>
+            
+        </Menu>
+
+        <ToolBarTray DockPanel.Dock="Top">
+            <ToolBar>
+                <Button Command="ApplicationCommands.New">
+                    <Image Source="Iconos/add.ico"></Image>
+                </Button>
+                <Button Command="local:CustomCommands.Exit">
+                    <Image Source="Iconos/exit.ico"></Image>
+                </Button>
+            </ToolBar>
+
+            <ToolBar>
+                <Button>
+                    <Image Source="Iconos/copy.ico"></Image>
+                </Button>
+                <Button>
+                    <Image Source="Iconos/paste.ico"></Image>
+                </Button>
+                <Button>
+                    <Image Source="Iconos/delete.ico"></Image>
+                </Button>
+            </ToolBar>
+        </ToolBarTray>
+
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem>
+                <TextBlock HorizontalAlignment="Left" Text="Ismael Collado"></TextBlock>
+            </StatusBarItem>
+
+            <StatusBarItem HorizontalAlignment="Right">
+                <TextBlock HorizontalAlignment="Right" Text="12:00:00" x:Name="HoraTextBlock"/>
+            </StatusBarItem>
+        </StatusBar>
+
+        <Border Margin="5" BorderBrush="Black" BorderThickness="1">
+            <ListBox x:Name="ListaItemsListBox" DataContext="{Binding}">
+                
+            </ListBox>
+        </Border>
         
-    </Grid>
+    </DockPanel>
 </Window>
