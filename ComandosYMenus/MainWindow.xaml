@@ -22,8 +22,33 @@
             Command="local:CustomCommands.Delete"
             Executed="DeleteCommand_Executed"
             CanExecute="DeleteCommand_CanExecute"/>
+
+        <CommandBinding 
+            Command="ApplicationCommands.Copy"
+            Executed="CopyCommand_Executed"
+            CanExecute="CopyCommand_CanExecute"/>
+
+        <CommandBinding
+            Command="ApplicationCommands.Paste"
+            Executed="PasteCommand_Executed"
+            CanExecute="PasteCommand_CanExecute"/>
     </Window.CommandBindings>
-    
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+
+        <ContextMenu x:Key="CopiarPegarContextMenu">
+
+            <MenuItem Header="_Copiar" InputGestureText="Ctrl+C" Command="ApplicationCommands.Copy">
+            </MenuItem>
+
+            <Separator/>
+
+            <MenuItem Header="_Pegar" InputGestureText="Ctrl+V" Command="ApplicationCommands.Paste">
+            </MenuItem>
+
+        </ContextMenu>
+
+    </Window.Resources>
     <DockPanel>
 
         <Menu DockPanel.Dock="Top">
@@ -44,13 +69,13 @@
 
             <MenuItem Header="_Editar">
 
-                <MenuItem Header="_Copiar" InputGestureText="Ctrl+C">
+                <MenuItem Header="_Copiar" InputGestureText="Ctrl+C" Command="ApplicationCommands.Copy">
                     <MenuItem.Icon>
                         <Image Source="Iconos/copy.ico"></Image>
                     </MenuItem.Icon>
                 </MenuItem>
 
-                <MenuItem Header="_Pegar" InputGestureText="Ctrl+V">
+                <MenuItem Header="_Pegar" InputGestureText="Ctrl+V" Command="ApplicationCommands.Paste">
                     <MenuItem.Icon>
                         <Image Source="Iconos/paste.ico"></Image>
                     </MenuItem.Icon>
@@ -58,7 +83,7 @@
 
                 <Separator/>
 
-                <MenuItem Header="_Vaciar" InputGestureText="Alt+V">
+                <MenuItem Header="_Vaciar" InputGestureText="Alt+V" Command="local:CustomCommands.Delete">
                     <MenuItem.Icon>
                         <Image Source="Iconos/delete.ico"></Image>
                     </MenuItem.Icon>
@@ -67,16 +92,16 @@
             </MenuItem>
 
             <MenuItem Header="_Ver">
-                
-                <MenuItem Header="Barra de herramientas General" IsCheckable="True" IsChecked="True"/>
-                <MenuItem Header="Barra de herramientas Edicion" IsCheckable="True" IsChecked="True"/>
-                
+
+                <MenuItem x:Name="HerramientasGeneralMenuItem" Header="Barra de herramientas General" IsCheckable="True" IsChecked="True"/>
+                <MenuItem x:Name="HerramientasEdicionMenuItem" Header="Barra de herramientas Edicion" IsCheckable="True" IsChecked="True"/>
+
             </MenuItem>
-            
+
         </Menu>
 
         <ToolBarTray DockPanel.Dock="Top">
-            <ToolBar>
+            <ToolBar Visibility="{Binding ElementName=HerramientasGeneralMenuItem, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <Button Command="ApplicationCommands.New">
                     <Image Source="Iconos/add.ico"></Image>
                 </Button>
@@ -85,14 +110,14 @@
                 </Button>
             </ToolBar>
 
-            <ToolBar>
-                <Button>
+            <ToolBar Visibility="{Binding ElementName=HerramientasEdicionMenuItem, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Button Command="ApplicationCommands.Copy">
                     <Image Source="Iconos/copy.ico"></Image>
                 </Button>
-                <Button>
+                <Button Command="ApplicationCommands.Paste">
                     <Image Source="Iconos/paste.ico"></Image>
                 </Button>
-                <Button>
+                <Button Command="local:CustomCommands.Delete">
                     <Image Source="Iconos/delete.ico"></Image>
                 </Button>
             </ToolBar>
@@ -104,15 +129,15 @@
             </StatusBarItem>
 
             <StatusBarItem HorizontalAlignment="Right">
-                <TextBlock HorizontalAlignment="Right" Text="12:00:00" x:Name="HoraTextBlock"/>
+                <TextBlock x:Name="HoraTextBlock"/>
             </StatusBarItem>
         </StatusBar>
 
-        <Border Margin="5" BorderBrush="Black" BorderThickness="1">
+        <Border Margin="5" BorderBrush="Black" BorderThickness="1" ContextMenu="{StaticResource CopiarPegarContextMenu}">
             <ListBox x:Name="ListaItemsListBox" DataContext="{Binding}">
-                
+
             </ListBox>
         </Border>
-        
+
     </DockPanel>
 </Window>
